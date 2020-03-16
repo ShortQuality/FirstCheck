@@ -70,6 +70,10 @@ namespace Checking_lab
             {
                 Console.WriteLine("\n \u221A{1} = {2}\n", n, a, root);
             }
+            Console.WriteLine("Verification with Math.Pow\n");
+            Console.WriteLine("Math.Pow = {0}\n", Math.Pow(a, 1d / n));
         }
+
+        
     }
 }
