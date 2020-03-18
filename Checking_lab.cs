@@ -8,7 +8,6 @@ namespace Checking_lab
 {
     class Checking_lab
     {
-
         static void Main(string[] args)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -27,10 +26,23 @@ namespace Checking_lab
             try
             {
                 string[] temp = Console.ReadLine().Replace(',','.').Split(' ');
+                
                 a = Convert.ToDouble(temp[0]);
                 n = Convert.ToInt32(temp[1]);
 
                 if (n <= 0)
+                {
+                    Console.WriteLine("Incorrect enter!\n");
+                    ValueEntering(out a, out n);
+                }
+                
+                //if(n < 0 && n % 2 == 0)
+                //{
+                //    Console.WriteLine("Incorrect enter!\n");
+                //    ValueEntering(out a, out n);
+                //}
+
+                if(a < 0 && n % 2 == 0)
                 {
                     Console.WriteLine("Incorrect enter!\n");
                     ValueEntering(out a, out n);
@@ -47,16 +59,41 @@ namespace Checking_lab
         internal static void Computing(double a, int n)
         {
             const double accuracy = 0.00001;
-            double nx = a/n;
-            double x_k = nx;
-            double term = 0;
-            do
+            if(a != 0)
             {
-                nx = x_k;
-                term = nx - a / Math.Pow(nx, n - 1);
-                x_k = nx - term / n;
-            } while (Math.Abs(x_k - nx) > accuracy);
-            ValueOutput(a, n, x_k);
+                if(a < 0 && n % 2 != 0)
+                {
+                    double nx = a / n;
+                    double x_k = nx;
+                    double term = 0;
+
+                    do
+                    {
+                        nx = x_k;
+                        term = nx - a / Math.Pow(nx, n - 1);
+                        x_k = nx - term / n;
+                    } while (Math.Abs(x_k - nx) > accuracy);
+                    ValueOutput(a, n, x_k);
+                }
+                else if(a > 0)
+                {
+                    double nx = a / n;
+                    double x_k = nx;
+                    double term = 0;
+
+                    do
+                    {
+                        nx = x_k;
+                        term = nx - a / Math.Pow(nx, n - 1);
+                        x_k = nx - term / n;
+                    } while (Math.Abs(x_k - nx) > accuracy);
+                    ValueOutput(a, n, x_k);
+                }
+            }
+            else
+            {
+                ValueOutput(a, n, 0);
+            }
         }
         
         private static void ValueOutput(double a, int n, double root)
@@ -71,9 +108,14 @@ namespace Checking_lab
                 Console.WriteLine("\n \u221A{1} = {2}\n", n, a, root);
             }
             Console.WriteLine("Verification with Math.Pow\n");
-            Console.WriteLine("Math.Pow = {0}\n", Math.Pow(a, 1d / n));
+            if(a < 0 && n % 2 != 0)
+            {
+                Console.WriteLine("Math.Pow = -{0}\n", Math.Pow(a * (-1d), 1d / n));
+            }
+            else
+            {
+                Console.WriteLine("Math.Pow = {0}\n", Math.Pow(a, 1d / n));
+            }
         }
-
-        
     }
 }
